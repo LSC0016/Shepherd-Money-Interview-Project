@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import java.util.List;
 
 @Entity
 @Getter
@@ -23,6 +24,20 @@ public class User {
     private String email;
 
     // TODO: User's credit card
-    // HINT: A user can have one or more, or none at all. We want to be able to query credit cards by user
-    //       and user by a credit card.
+    // HINT: A user can have one or more, or none at all. We want to be able to
+    // query credit cards by user
+    // and user by a credit card.
+
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private List<CreditCard> creditCards;
+
+    public void addCreditCard(CreditCard creditCard) {
+        creditCards.add(creditCard);
+        creditCard.setOwner(this);
+    }
+
+    public void removeCreditCard(CreditCard creditCard) {
+        creditCards.remove(creditCard);
+        creditCard.setOwner(null);
+    }
 }
